@@ -35,6 +35,8 @@ gem 'spring', group: :development
 gem 'pg', group: :production
 gem 'rails_12factor', group: :production
 
+#gem 'figaro'
+gem 'heroku_secrets', github: 'alexpeattie/heroku_secrets'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
