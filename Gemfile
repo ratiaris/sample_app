@@ -8,6 +8,7 @@ gem 'rails', '4.1.4'
 #gem 'sqlite3', group: [:development, :test]
 
 gem 'rspec-rails', group: [:development, :test]
+gem 'guard-rspec', group: [:development, :test]
 gem 'selenium-webdriver', group: :test
 gem 'capybara', group: :test
 
