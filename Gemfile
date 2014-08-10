@@ -13,12 +13,16 @@ gem 'spork', group: [:development, :test], github: 'manafire/spork'
 gem 'spork-rails', group: [:development, :test]
 gem 'guard-spork', group: [:development, :test]
 gem 'childprocess', group: [:development, :test]
-
 gem 'selenium-webdriver', group: :test
 gem 'capybara', group: :test
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
+
+# Use Bootstrap
+gem 'bootstrap-sass'
+#gem 'sprockets', '2.11.0'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
