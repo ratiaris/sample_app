@@ -9,6 +9,11 @@ gem 'rails', '4.1.4'
 
 gem 'rspec-rails', group: [:development, :test]
 gem 'guard-rspec', group: [:development, :test]
+gem 'spork', group: [:development, :test], github: 'manafire/spork'
+gem 'spork-rails', group: [:development, :test]
+gem 'guard-spork', group: [:development, :test]
+gem 'childprocess', group: [:development, :test]
+
 gem 'selenium-webdriver', group: :test
 gem 'capybara', group: :test
 
