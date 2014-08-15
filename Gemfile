@@ -17,6 +17,8 @@ gem 'selenium-webdriver', group: :test
 gem 'capybara', group: :test
 gem 'bcrypt'
 
+gem 'factory_girl_rails', group: :test
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 
