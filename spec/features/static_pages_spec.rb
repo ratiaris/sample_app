@@ -9,7 +9,7 @@ RSpec.describe "StaticPages", :type => :request do
 end
 =end
 
-require 'rails_helper'
+require 'spec_helper'
 
 describe "Static pages" do
 

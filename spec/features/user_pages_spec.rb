@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'spec_helper'
 
 describe "User pages" do
 
@@ -19,27 +19,13 @@ describe "User pages" do
 		it { should have_title(user.name) }
 	end
 
-	def fill_invalid_information
-		fill_in "Name", 		with: "A"
-		fill_in "Email", 		with: "foo@bar.com"
-		fill_in "Password",     with: "f"
-		fill_in "Confirmation", with: "f"
-	end
-
-	def fill_valid_information
-		fill_in "Name", 		with: "Example User"
-		fill_in "Email", 		with: "user@example.com"
-		fill_in "Password",     with: "foobar"
-		fill_in "Confirmation", with: "foobar"
-	end
-
 	describe "signup" do
 		before { visit signup_path }
 
 		let (:submit) { "Create my account" }
 
 		describe "with invalid information" do
-			before { fill_invalid_information }
+			before { fill_in_invalid_signup_information }
 
 			it "should not create a user" do
 				expect { click_button submit }.not_to change(User, :count)
@@ -49,12 +35,12 @@ describe "User pages" do
 				before { click_button submit }
 
 				it { should have_title 'Sign up' }
-				it { should have_content 'error' } 
+				it { should have_error_message 'error' } 
 			end
 		end
 
 		describe "with valid information" do 
-			before { fill_valid_information }
+			before { fill_in_valid_signup_information }
 
 			it "should create a user" do
 				expect { click_button submit }.to change(User, :count).by(1)
@@ -65,6 +51,7 @@ describe "User pages" do
 
 				let(:user ) { User.find_by(email: "user@example.com") }
 
+				it { should have_link('Sign out') }
 				it { should have_title user.name }
 				it { should have_selector('div.alert.alert-success', text: 'Welcome') }			
 			end

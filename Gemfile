@@ -8,13 +8,16 @@ gem 'rails', '4.1.4'
 #gem 'sqlite3', group: [:development, :test]
 
 gem 'rspec-rails', group: [:development, :test]
+gem 'rspec-its', group: [:development, :test]
 gem 'guard-rspec', group: [:development, :test]
-gem 'spork', group: [:development, :test], github: 'manafire/spork'
+gem 'spork', group: [:development, :test,:no_update], github: 'manafire/spork'
 gem 'spork-rails', group: [:development, :test]
 gem 'guard-spork', group: [:development, :test]
 gem 'childprocess', group: [:development, :test]
 gem 'selenium-webdriver', group: :test
 gem 'capybara', group: :test
+gem 'cucumber-rails', group: :test, require: false
+gem 'database_cleaner', group: :test, github: 'bmabey/database_cleaner'
 gem 'bcrypt'
 
 gem 'factory_girl_rails', group: :test
