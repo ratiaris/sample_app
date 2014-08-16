@@ -11,7 +11,7 @@ end
 
 require 'spec_helper'
 
-describe "Static pages" do
+describe "Static pages", type: :request do
 
     subject { page }
 

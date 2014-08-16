@@ -19,6 +19,9 @@ gem 'capybara', group: :test
 gem 'cucumber-rails', group: :test, require: false
 gem 'database_cleaner', group: :test, github: 'bmabey/database_cleaner'
 gem 'bcrypt'
+gem 'faker'
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
 
 gem 'factory_girl_rails', group: :test
 
