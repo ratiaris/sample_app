@@ -80,7 +80,19 @@ describe "Authentication", type: :request do
 					it "should render the desired protected page" do
 						expect(page).to have_title('Edit user')
 					end
+
+					describe "when signing in again" do
+						before do
+							click_link 'Sign out'
+							valid_signin user
+						end
+
+						it "should render the profile page" do
+							expect(page).to have_title(user.name)
+						end
+					end
 				end
+
 			end
 		end
 
@@ -89,14 +101,14 @@ describe "Authentication", type: :request do
 			let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
 			before { valid_signin user, no_capybara: true }
 
-			describe "submitting a GET request to the Users#edit action" do
+			describe "submitting a GET request to the users#edit action" do
 				before { get edit_user_path(wrong_user) }
 
 				specify { expect(response.body).not_to match(full_title('Edit user')) }
 				specify { expect(response).to redirect_to(root_path) }
 			end
 
-			describe "submitting a PATCH request to the Users#update action" do
+			describe "submitting a PATCH request to the users#update action" do
 				before { patch user_path(wrong_user) }
 
 				specify { expect(response).to redirect_to(root_path) }
@@ -109,11 +121,42 @@ describe "Authentication", type: :request do
 
 			before { valid_signin non_admin, no_capybara: true }
 
-			describe "submitting a DELETE request to the Users#destroy actions" do
+			describe "submitting a DELETE request to the users#destroy actions" do
 				before { delete user_path(user) }
 				
 				specify { expect(response).to redirect_to(root_path)}
 			end
 		end
+
+		describe "as admin user" do
+			let(:admin) { FactoryGirl.create(:admin) }
+
+			before { valid_signin admin, no_capybara: true }
+
+			describe "submitting a DELETE request to the users#destroy actions" do
+				before { delete user_path(admin) }
+				
+				specify { expect(response).to redirect_to(root_path)}
+			end
+		end
+
+		describe "as signed-in user" do
+			let(:user) { FactoryGirl.create(:user) }
+
+			before { valid_signin user, no_capybara: true }
+
+			describe "submitting a GET request to the users#new actions" do
+				before { get signup_path }
+				
+				specify { expect(response).to redirect_to(root_path)}
+			end
+
+			describe "submitting a POST request to the users#create actions" do
+				before { post users_path, user: { name: user.name, email: user.email,
+					password: user.password, password_confirmation: user.password_confirmation } }
+				
+				specify { expect(response).to redirect_to(root_path)}
+			end
+		end		
 	end
 end

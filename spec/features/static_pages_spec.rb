@@ -18,6 +18,27 @@ describe "Static pages", type: :request do
     shared_examples_for "all static pages" do
         it { should have_selector('h1', text: heading) }
         it { should have_title(full_title(page_title)) }
+
+        describe "header" do
+            it { should have_link "Home" }
+            it { should have_link "Help" }
+            it { should have_link "sample app" }
+        end
+
+        describe "footer" do
+            it { should have_link "About" }
+            it { should have_link "Contact" }
+            it { should have_link "News" }
+        end
+
+        describe "when user not signed in" do
+            it { should have_link 'Sign in' }
+            it { should_not have_link 'Users' }
+            it { should_not have_link 'Profile' }
+            it { should_not have_link 'Settings' }
+            it { should_not have_link 'Sign out' }
+        end
+        
     end
 
     describe "Home Page" do
@@ -27,6 +48,7 @@ describe "Static pages", type: :request do
 
         it_should_behave_like "all static pages"
         it { should_not have_title(full_title("Home")) }
+        it { should have_link 'Rails Tutorial' }
     end
 
     describe "Help Page" do
@@ -53,19 +75,19 @@ describe "Static pages", type: :request do
         it_should_behave_like "all static pages"
     end
 
-  it "should have the right links on the layout" do
-    visit root_path
-    click_link "About"
-    expect(page).to have_title(full_title('About Us'))
-    click_link "Help"
-    expect(page).to have_title(full_title('Help'))
-    click_link "Contact"
-    expect(page).to have_title(full_title('Contact'))
-    click_link "Home"
-    expect(page).to have_title(full_title(''))
-    click_link "Sign up now!"
-    expect(page).to have_title(full_title('Sign up'))
-    click_link "sample app"
-    expect(page).to have_title(full_title(''))
-  end
+    it "should have the right links on the layout" do
+        visit root_path
+        click_link "About"
+        expect(page).to have_title(full_title('About Us'))
+        click_link "Help"
+        expect(page).to have_title(full_title('Help'))
+        click_link "Contact"
+        expect(page).to have_title(full_title('Contact'))
+        click_link "Home"
+        expect(page).to have_title(full_title(''))
+        click_link "Sign up now!"
+        expect(page).to have_title(full_title('Sign up'))
+        click_link "sample app"
+        expect(page).to have_title(full_title(''))
+    end
 end
