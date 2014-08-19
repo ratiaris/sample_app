@@ -68,6 +68,12 @@ describe "Authentication", type: :request do
 
 					it { should have_title "Sign in" }
 				end
+
+				describe "visiting the user profile page" do
+					before { visit user_path user }
+
+					it { should have_title "Sign in" }
+				end
 			end
 			
 			describe "when attempting to visit a protected page" do
@@ -92,7 +98,19 @@ describe "Authentication", type: :request do
 						end
 					end
 				end
+			end
 
+			describe "in the Micropost controller" do
+
+				describe "submitting a POST request to the micropost#create action" do
+					before { post microposts_path }
+					specify { expect(response).to redirect_to(signin_path) }
+				end
+
+				describe "submitting a DELETE request to the micropost#destroy action" do
+					before { delete micropost_path(FactoryGirl.create(:micropost)) }
+					specify { expect(response).to redirect_to(signin_path) }
+				end
 			end
 		end
 
@@ -110,7 +128,6 @@ describe "Authentication", type: :request do
 
 			describe "submitting a PATCH request to the users#update action" do
 				before { patch user_path(wrong_user) }
-
 				specify { expect(response).to redirect_to(root_path) }
 			end
 		end

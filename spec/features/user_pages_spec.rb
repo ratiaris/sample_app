@@ -13,10 +13,18 @@ describe "User pages", type: :request do
 
 	describe "profile page" do
 		let(:user) { FactoryGirl.create(:user) }
-		before { visit user_path(user) }
+		let!(:m1) { FactoryGirl.create(:micropost, user: user, content: "Foo") }
+		let!(:m2) { FactoryGirl.create(:micropost, user: user, content: "Bar") }
+		before { valid_signin user }
 
 		it { should have_content(user.name) }
 		it { should have_title(user.name) }
+
+		describe "microposts" do
+			it { should have_content(m1.content) }
+			it { should have_content(m2.content) }
+			it { should have_content(user.microposts.count) }
+		end
 	end
 
 	describe "signup" do
@@ -35,7 +43,7 @@ describe "User pages", type: :request do
 				before { click_button submit }
 
 				it { should have_title 'Sign up' }
-				it { should have_error_message 'error' } 
+				it { should have_error_message } 
 			end
 		end
 
@@ -77,7 +85,7 @@ describe "User pages", type: :request do
 				click_button "Save changes"
 			end
 
-			it { should have_error_message 'error' } 
+			it { should have_error_message } 
 		end
 
 		describe "with valid information" do

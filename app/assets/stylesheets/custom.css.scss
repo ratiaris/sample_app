@@ -124,7 +124,7 @@ aside {
     border-top: 1px solid $gray-lighter;
     &:first-child {
       border: 0;
-      padding-top: 0;
+      padding-top: 10px;
     }
     span {
       display: block;
@@ -183,5 +183,37 @@ input {
     &:last-child {
       border-bottom: 1px solid $gray-lighter;
     }
+  }
+}
+
+/* microposts */
+
+.microposts {
+  list-style: none;
+  margin: 10px 0 0 0;
+
+  li {
+    padding: 10px 0;
+    border-top: 1px solid #e8e8e8;
+  }
+}
+
+.content {
+  display: block;
+}
+
+.timestamp {
+  color: $gray-light;
+}
+
+.gravatar {
+  float: left;
+  margin-right: 10px;
+}
+
+aside {
+  textarea {
+    height: 100px;
+    margin-bottom: 5px;
   }
 }
