@@ -38,7 +38,6 @@ describe "Static pages", type: :request do
             it { should_not have_link 'Settings' }
             it { should_not have_link 'Sign out' }
         end
-        
     end
 
     describe "Home Page" do
@@ -49,22 +48,6 @@ describe "Static pages", type: :request do
         it_should_behave_like "all static pages"
         it { should_not have_title(full_title("Home")) }
         it { should have_link 'Rails Tutorial' }
-
-        describe "for signed-in users" do
-            let(:user) { FactoryGirl.create(:user) }
-            before do
-                FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum")
-                FactoryGirl.create(:micropost, user: user, content: "Dolor sit amet")
-                valid_signin user
-                visit root_path
-            end
-
-            it "should render the user's feed" do
-                user.feed.each do | item |
-                    expect(page).to have_selector("li##{item.id}", text: item.content)
-                end
-            end
-        end
     end
 
     describe "Help Page" do

@@ -6,5 +6,9 @@
 	<%= link_to "view my profile", current_user %>
 </span>
 <span>
-	<%= pluralize(current_user.microposts.count, "microposts") %>
+	<% if current_user.microposts.count > 0 %>
+		<%= pluralize(current_user.microposts.count, "micropost") %>
+	<% else %>
+		No micropost
+	<% end %>	
 </span>
