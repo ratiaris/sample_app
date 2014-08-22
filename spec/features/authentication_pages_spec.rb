@@ -26,7 +26,7 @@ describe "Authentication", type: :request do
 		end
 
 		describe "with valid information" do
-			let(:user) { FactoryGirl.create(:user) }
+			let(:user) { FactoryGirl.create :user }
 
 			before { valid_signin user }
 
@@ -47,31 +47,37 @@ describe "Authentication", type: :request do
 	describe "authorization" do
 
 		describe "for non-signed-in user" do
-			let(:user) { FactoryGirl.create(:user) }
+			let(:user) { FactoryGirl.create :user }
 
 			describe "in the Users controller" do
 
 				describe "visiting the edit page" do
 					before { visit edit_user_path(user) }
-
 					it { should have_title "Sign in" }
 				end
 
 				describe "submitting to the update action" do
 					before { patch user_path(user) }
-
 					specify { expect(response).to redirect_to(signin_path) }
 				end
 
 				describe "visiting the user index" do
 					before { visit users_path }
-
 					it { should have_title "Sign in" }
 				end
 
 				describe "visiting the user profile page" do
 					before { visit user_path user }
+					it { should have_title "Sign in" }
+				end
 
+				describe "visiting the following page" do
+					before { visit following_user_path user }
+					it { should have_title "Sign in" }
+				end
+
+				describe "visiting the followers page" do
+					before { visit followers_user_path user }
 					it { should have_title "Sign in" }
 				end
 			end
@@ -104,26 +110,39 @@ describe "Authentication", type: :request do
 
 				describe "submitting a POST request to the micropost#create action" do
 					before { post microposts_path }
-					specify { expect(response).to redirect_to(signin_path) }
+					specify { expect(response).to redirect_to signin_path }
 				end
 
 				describe "submitting a DELETE request to the micropost#destroy action" do
-					before { delete micropost_path(FactoryGirl.create(:micropost)) }
-					specify { expect(response).to redirect_to(signin_path) }
+					before { delete micropost_path(FactoryGirl.create :micropost) }
+					specify { expect(response).to redirect_to signin_path }
+				end
+			end
+
+			describe "in the Relationship controller" do
+
+				describe "submitting a POST request to the relationship#create action" do
+					before { post relationships_path }
+					specify { expect(response).to redirect_to signin_path }
+				end
+
+				describe " submitting a DELETE request to the relationship#destroy action" do
+					before { delete relationship_path 1 }
+					specify { expect(response).to redirect_to signin_path }
 				end
 			end
 		end
 
 		describe "as wrong user" do
-			let(:user) { FactoryGirl.create(:user) }
-			let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
+			let(:user) { FactoryGirl.create :user }
+			let(:wrong_user) { FactoryGirl.create :user, email: "wrong@example.com" }
 			before { valid_signin user, no_capybara: true }
 
 			describe "submitting a GET request to the users#edit action" do
-				before { get edit_user_path(wrong_user) }
+				before { get edit_user_path wrong_user  }
 
-				specify { expect(response.body).not_to match(full_title('Edit user')) }
-				specify { expect(response).to redirect_to(root_path) }
+				specify { expect(response.body).not_to match full_title('Edit user') }
+				specify { expect(response).to redirect_to root_path  }
 			end
 
 			describe "submitting a PATCH request to the users#update action" do
@@ -133,46 +152,46 @@ describe "Authentication", type: :request do
 		end
 
 		describe "as non-admin user" do
-			let(:user) { FactoryGirl.create(:user) }
-			let(:non_admin) { FactoryGirl.create(:user) }
+			let(:user) { FactoryGirl.create :user }
+			let(:non_admin) { FactoryGirl.create :user }
 
 			before { valid_signin non_admin, no_capybara: true }
 
 			describe "submitting a DELETE request to the users#destroy actions" do
-				before { delete user_path(user) }
+				before { delete user_path user }
 				
-				specify { expect(response).to redirect_to(root_path)}
+				specify { expect(response).to redirect_to root_path }
 			end
 		end
 
 		describe "as admin user" do
-			let(:admin) { FactoryGirl.create(:admin) }
+			let(:admin) { FactoryGirl.create :admin }
 
 			before { valid_signin admin, no_capybara: true }
 
 			describe "submitting a DELETE request to the users#destroy actions" do
-				before { delete user_path(admin) }
+				before { delete user_path admin  }
 				
-				specify { expect(response).to redirect_to(root_path)}
+				specify { expect(response).to redirect_to root_path }
 			end
 		end
 
 		describe "as signed-in user" do
-			let(:user) { FactoryGirl.create(:user) }
+			let(:user) { FactoryGirl.create :user }
 
 			before { valid_signin user, no_capybara: true }
 
 			describe "submitting a GET request to the users#new actions" do
 				before { get signup_path }
 				
-				specify { expect(response).to redirect_to(root_path)}
+				specify { expect(response).to redirect_to root_path }
 			end
 
 			describe "submitting a POST request to the users#create actions" do
 				before { post users_path, user: { name: user.name, email: user.email,
 					password: user.password, password_confirmation: user.password_confirmation } }
 				
-				specify { expect(response).to redirect_to(root_path)}
+				specify { expect(response).to redirect_to root_path }
 			end
 		end		
 	end
