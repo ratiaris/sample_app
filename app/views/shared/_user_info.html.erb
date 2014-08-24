@@ -2,6 +2,7 @@
 <h1>
 	<%= current_user.name %>
 </h1>
+<% if profile %>
 <span>
 	<%= link_to "view my profile", current_user %>
 </span>
@@ -12,3 +13,4 @@
 		No micropost
 	<% end %>	
 </span>
+<% end %>

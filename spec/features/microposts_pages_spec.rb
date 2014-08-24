@@ -125,7 +125,7 @@ describe "Microposts Pages", :type => :request do
 
 			before do
 				FactoryGirl.create(:micropost, user: wrong_user, content: content )
-				visit user_path(wrong_user)
+				visit user_path wrong_user
 			end
 
 			it { should have_title(full_title wrong_user.name)}
@@ -137,7 +137,7 @@ describe "Microposts Pages", :type => :request do
 		describe "clicking on a delete link" do
 			before do
 				FactoryGirl.create(:micropost, user: user)
-				visit user_path(user)
+				visit user_path user
 			end
 
 			it "should delete a micropost" do
@@ -151,7 +151,7 @@ describe "Microposts Pages", :type => :request do
 					FactoryGirl.create(:micropost, user: user,
 						content: "Lorem ipsum dolor sit amet #{n}")
 				end
-				visit user_path(user)
+				visit user_path user
 			end
 			after { Micropost.delete_all }
 
@@ -162,6 +162,17 @@ describe "Microposts Pages", :type => :request do
 					expect(page).to have_selector("li", text: item.content)
 				end
 			end
-		end    
+		end
+
+		describe "follower/following counts" do
+			let(:other_user) { FactoryGirl.create(:user) }
+			before do
+				other_user.follow! user
+				visit user_path user
+			end
+
+			it { should have_link("0 following", href: following_user_path(user)) } 
+			it { should have_link("1 follower",  href: followers_user_path(user)) } 
+		end   
 	end
 end

@@ -206,5 +206,21 @@ describe User do
             it { should_not be_following other_user }
             its(:followed_users) { should_not include other_user }
         end
+
+        describe "destroyed" do
+            describe "should remove him from his followers relationships" do
+                before {  other_user.destroy }
+
+                it { should_not be_following other_user }
+                its(:followed_users) { should_not include other_user }
+            end
+
+            describe "should remove him from his following users relationships" do
+                before {  @user.destroy }
+                subject { other_user }
+
+                its(:followers) { should_not include @user }
+            end
+        end
     end
 end
